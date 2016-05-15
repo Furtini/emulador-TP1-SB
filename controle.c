@@ -46,18 +46,18 @@ void Carregador(FILE *arq, int16_t *memoria, int *PC){
 	int parada;
 	int operandos, opcode;
 
-	unsigned char buffer1[1];
-	unsigned char buffer2[1];
+	unsigned char buffer1[2];
+	unsigned char buffer2;
 
 
-	fread(buffer1, 1, 1, arq);
-	fread(buffer2, 1, 1, arq);
+	fread((char *)&buffer1[0], 1, 1, arq);
+	fread((char *)&buffer1[1], 1, 1, arq);
 
-	printf("Primeiro byte lido: %d\n", buffer1[1]);
-	printf("Segundo byte lido: %d\n", buffer2[0]);
+	printf("Primeiro byte lido: %d\n", buffer1[0]);
+	printf("Segundo byte lido: %d\n", buffer1[1]);
 
 
-	opcode = buffer1[0] + buffer2[0];
+	opcode = buffer1[1];
 
 	printf("Opcode: %d \n", opcode);
 	/*
