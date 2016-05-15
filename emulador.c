@@ -2,7 +2,7 @@
 // Software Basico - Trabalho Pratico 1
 // Emulador
 // Lucas Furtini Veado - 2013007609
-// Edson ...
+// Edson Roteia Araujo Juniot - 2014004174
 
 // Memoria = 1000 posicoes.
 // Cada posicao = 1 palavra 16 bits.

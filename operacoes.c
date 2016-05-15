@@ -2,7 +2,7 @@
 // Software Basico - Trabalho Pratico 1
 // Emulador
 // Lucas Furtini Veado - 2013007609
-// Edson ...
+// Edson Roteia Araujo Junior
 
 #include <stdio.h>
 #include <stdlib.h>
