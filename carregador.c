@@ -43,7 +43,6 @@ FILE *AbreArquivo(const char *nomeArquivo) {
 void Carregador(FILE *arq, int16_t *memoria, int *IP){
 	printf("Teste Leitura Entrada.\n");
 
-	int i;
 	int16_t instrucao;
 	int16_t op1, op2;
 
@@ -105,7 +104,5 @@ void Carregador(FILE *arq, int16_t *memoria, int *IP){
 	
 	printf("IP final: %d \n", *IP);
 	printf("Final do arquivo.\n");
-	for (i = 0; i < 10; i++){
-		printf("Posicao %d: %x \n",i, memoria[i]);
-	}
+	
 }

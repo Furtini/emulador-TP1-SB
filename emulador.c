@@ -20,7 +20,6 @@
 
 #include "carregador.h"
 #include "interpretador.h"
-#include "operacoes.h"
 
 int main(int argc, char const *argv[]) {
 	
@@ -49,9 +48,9 @@ int main(int argc, char const *argv[]) {
 	// Incrementado a cada iteracao.
 	int IP = 0; // Instruction pointer.
 	// Indica se resultado da operacao eh zero(1) ou diferente de zero (0).
-	unsigned short int ZF = 0; // Zero flag.
+	unsigned short ZF = 0; // Zero flag.
 	// Indica se resultado da op eh positivo (0) ou negativo (1).
-	unsigned short int SF = 0; // Sign flag.
+	unsigned short SF = 0; // Sign flag.
 
 	// =========================================================================
 
@@ -68,6 +67,8 @@ int main(int argc, char const *argv[]) {
 	// Leitura das instrucoes.
 	Carregador(arq, memoria, &IP);
 	
+	Interpretador(memoria, &AL, &AH, &AX, &BL, &BH, &BX, &CL, &CH, &CX, &BP, &SP, &IP, &ZF, &SF);
+
 	fclose(arq);
 	free(memoria);
 	return 0;
