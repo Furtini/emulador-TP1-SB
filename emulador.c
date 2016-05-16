@@ -18,7 +18,8 @@
 #include <stdlib.h>
 #include <inttypes.h>
 
-#include "controle.h"
+#include "carregador.h"
+#include "interpretador.h"
 #include "operacoes.h"
 
 int main(int argc, char const *argv[]) {

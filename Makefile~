@@ -1,8 +1,8 @@
 ################# Makefile ####################
 CC=gcc
 CFLAGS=-I.
-DEPS = operacoes.h
-OBJ = emulador.o operacoes.o
+DEPS = operacoes.h carregador.h
+OBJ = emulador.o operacoes.o carregador.o
 
 all: emulador
 
