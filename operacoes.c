@@ -2,7 +2,7 @@
 // Software Basico - Trabalho Pratico 1
 // Emulador
 // Lucas Furtini Veado - 2013007609
-// Edson ...
+// Edson Roteia Araujo Junior - 2014004174
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -15,7 +15,42 @@
 
 // 01 - MOV (48 bits)
 // op1 <- op2
-void MOV(int *mem, int *op1, int *op2) {
+void MOV(int16_t *mem, int16_t *reg, int8_t codigo, int IP) {
+
+
+	int16_t temp_reg;
+
+	switch (codigo) {
+		case 3: // REG e MEM
+			temp_reg = mem[IP + 1];
+			switch (temp_reg) {
+				case 0: // AL
+
+				case 1: // AH
+				case 2: // AX
+				case 3: // BH
+				case 4: // BL
+				case 5: // BX
+				case 6: // Cl
+				case 7: // CH
+				case 8: // CX
+				default:
+					printf("ERRO de codigo de registrador.\n");
+					exit(1);
+					break;
+			}		
+			break;				
+		case 4: // MEM e REG
+		case 5: // REG e REG 
+		case 6: // MEM e I
+		case 7: // REG e I
+		default:
+			printf("ERRO de codigo.\n");
+			exit(1);
+			break;
+	}
+
+
 
 }
 
@@ -27,7 +62,41 @@ void ADD(int *mem, int *op1, int *op2);
 // 03 - SUB (48 bits)
 // op1 = op1 - op2
 // Afeta -> ZF e SF
-void SUB(int *mem, int *op1, int *op2);
+void SUB(int16_t *mem, int16_t *reg, int codigo, int IP) {
+
+	int16_t temp_reg;
+
+	switch (codigo) {
+		case 3: // REG e MEM
+			temp_reg = mem[IP + 1];
+			switch (temp_reg) {
+				case 0: // AL
+
+				case 1: // AH
+				case 2: // AX
+				case 3: // BH
+				case 4: // BL
+				case 5: // BX
+				case 6: // Cl
+				case 7: // CH
+				case 8: // CX
+				default:
+					printf("ERRO de codigo de registrador.\n");
+					exit(1);
+					break;
+			}		
+			break;				
+		case 4: // MEM e REG
+		case 5: // REG e REG 
+		case 6: // MEM e I
+		case 7: // REG e I
+		default:
+			printf("ERRO de codigo.\n");
+			exit(1);
+			break;
+	}
+
+}
 
 // 04 - MUL (32 bits)
 // caso byte: AX = AL * op1
@@ -91,14 +160,101 @@ void PUSH (int *mem, int *op1);
 // Desempilha valor da memoria.
 void POP (int *mem, int *op1);   
    
-// 17 - DUMP (16 bits)
+// 17 - DUMP
 // Imprime valores de todos os registradores separados por " ".
-void DUMP();
+void DUMP(int16_t *reg) {
 
-// 18 - READ (32 bits)
-// Le hexa do teclado e salva em reg ou mem. 
-// Afeta -> ZF e SF
-void READ(int *mem, int *op1);
+	int i;
+	
+	printf("AX   BX   CX   BP   SP   IP   ZF   SF\n");
+	for(i = 0; i < 8; i++) {
+		printf("%04hX ",reg[i]);
+	}
+}
+
+// 18 - READ 
+void READ(int16_t *mem, int16_t *reg, int8_t codigo, int IP) {
+
+	int16_t input;
+	// Temps regs.
+	int8_t  AL, BL, CL;
+	int16_t AH, BH, CH;
+
+
+	// temp_reg = Operando da instrucao.
+	int16_t temp_reg = mem[IP + 1];
+	
+	// Setando Lower and higher regs.
+	AL = reg[0] & 0xff;
+	AH = reg[0] >> 8;
+	BL = reg[1] & 0xff;
+	BH = reg[1] >> 8;
+	CL = reg[2] & 0xff;
+	CH = reg[2] >> 8;
+	
+
+	printf("Entre com o valor: ");
+	scanf("%" SCNd16, &input);
+	
+	// Setando ZF e SF
+	(input == 0) ? (reg[6] = 1) : (reg[6] = 0);
+	(input >= 0) ? (reg[7] = 0) : (reg[7] = 1);	
+	
+	// REG
+	if (codigo == 1) {
+		switch (temp_reg) {
+			case 0: // AL
+
+				AL = AL + input;
+				reg[0] = reg[0] + AL;
+				break;
+			case 1: // AH
+
+				AH = AH + input;
+				AH = AH << 8;
+				reg[0] = reg[0] + AH;
+				break;
+			case 2: // AX
+				
+				reg[0] = input;
+				break;
+			case 3: // BH
+
+				BH = BH + input;
+				BH = BH << 8;
+				reg[1] = reg[1] + BH;
+				break;
+			case 4: // BL
+
+				BL = BL + input;
+				reg[1] = reg[1] + BL;
+				break;
+			case 5: // BX
+
+				reg[1] = input;
+				break;
+			case 6: // CL
+
+				CL = CL + input;
+				reg[2] = reg[2] + CL;
+				break;
+			case 7: // CH
+
+				CH = CH + input;
+				CH = CH << 8;
+				reg[2] = reg[2] + CH;
+				break;
+			case 8: // CX
+
+				reg[2] = input;
+				break;
+			default:
+				printf("ERRO de codigo de registrador.\n");
+				exit(1);
+				break;
+		}		
+	}
+}
 
 // 19 - WRITE (32 bits)
 // Escreve na tela valor do operando.

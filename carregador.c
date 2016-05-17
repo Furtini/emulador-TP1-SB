@@ -2,7 +2,7 @@
 // Software Basico - Trabalho Pratico 1
 // Emulador
 // Lucas Furtini Veado - 2013007609
-// Edson ...
+// Edson Roteia Araujo Junior - 2014004174
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -24,6 +24,20 @@ int16_t *InicializaMemoria() {
 	return (mem);
 }
 
+
+// Inicia vetor de registradores.
+int16_t *InicializaRegistradores() {
+
+	int16_t *regs;
+	regs = (int16_t *) calloc (NUM_REG, sizeof(int16_t));
+	if (regs == NULL) {
+		printf("ERRO ao alocar memoria.\n");
+		exit(1);
+	}
+
+	return (regs);
+}
+
 // Abre arquivo.
 FILE *AbreArquivo(const char *nomeArquivo) {
 
@@ -40,7 +54,7 @@ FILE *AbreArquivo(const char *nomeArquivo) {
 
 // Leitura das instrucoes e salvando na memoria virtualcriada.
 // Carregador.
-void Carregador(FILE *arq, int16_t *memoria, int *IP){
+void Carregador(FILE *arq, int16_t *memoria, int16_t *IP){
 	printf("Teste Leitura Entrada.\n");
 
 	int16_t instrucao;
@@ -53,8 +67,8 @@ void Carregador(FILE *arq, int16_t *memoria, int *IP){
 		
 		printf("Instrucao: %x \n",instrucao);
 		
-		//opcode = (instrucao >> 8) & 0xff;
-		//printf("Opcode: %d\n",opcode);
+		opcode = (instrucao >> 8) & 0xff;
+		printf("Opcode: %d\n",opcode);
 
 		codOperando = (instrucao) & 0xff;
 		printf("Codigo: %d \n",codOperando);

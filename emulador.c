@@ -2,7 +2,7 @@
 // Software Basico - Trabalho Pratico 1
 // Emulador
 // Lucas Furtini Veado - 2013007609
-// Edson ...
+// Edson Roteia Araujo Junior - 2014004174
 
 // Memoria = 1000 posicoes.
 // Cada posicao = 1 palavra 16 bits.
@@ -29,45 +29,53 @@ int main(int argc, char const *argv[]) {
 	int16_t *memoria;
 	
 	// REGISTRADORES.
-	// --- A ---
-	int8_t  AL = 0;
-	int8_t  AH = 0;
-	int16_t AX = 0;
-	// --- B ---
-	int8_t  BL = 0;
-	int8_t  BH = 0;
-	int16_t BX = 0;
-	// --- C ---
-	int8_t 	CL = 0;
-	int8_t  CH = 0;
-	int16_t CX = 0;
-	// Aponta para base da memoria (ultima posicao).
-	int BP = 0;  // Base pointer.
-	// A cada chamada para empilhar, valor empilhado na posicao (SP - 1)
-	int SP = 0; // Stack pointer.
-	// Incrementado a cada iteracao.
-	int IP = 0; // Instruction pointer.
-	// Indica se resultado da operacao eh zero(1) ou diferente de zero (0).
-	unsigned short ZF = 0; // Zero flag.
-	// Indica se resultado da op eh positivo (0) ou negativo (1).
-	unsigned short SF = 0; // Sign flag.
+	// 0 - AX
+	// 1 - BX
+	// 2 - CX
+	// 3 - SP
+	// 4 - BP
+	// 5 - IP
+	// 6 - ZF
+	// 7 - SF
+	int16_t *regs;
 
+	int16_t AX = 5000;
+	int16_t input = 10;
+	int8_t AL;
+	int16_t AH = (AX >> 8);
+
+	AL = AX & 0xff;
 	// =========================================================================
 
+	printf("AX: %" PRId16 "\n",AX);
+	printf("AL: %" PRId16 "\n",AL );
+	printf("AH: %" PRId16 "\n",AH );
+	printf("Input: %" PRId16 "\n",input );
+	printf("-------------\n");
+	AH = AH + input;
+	printf("AH: %" PRId16 "\n",AH );
+	AL = AL + input;
+	AH = AH << 8;
+	AX = AX + AL;
+	printf("AL: %" PRId16 "\n",AL );
+	printf("AH: %" PRId16 "\n",AH );
+	printf("AX :%" PRId16 "\n",AX);
 //	int x = 1;
 //	char *y = (char*)&x;
 //	printf("%c\n",*y+48);
 	
-	// Inicializa memoria e registradores.
+	// Inicializa memoria
 	memoria = InicializaMemoria();
+	// Inicializa registradores.
+	regs = InicializaRegistradores();
 
 	// Abertura de arquivo contendo instrucoes.
 	arq = AbreArquivo(argv[1]);
 
 	// Leitura das instrucoes.
-	Carregador(arq, memoria, &IP);
+	Carregador(arq, memoria, &regs[5]);
 	
-	Interpretador(memoria, &AL, &AH, &AX, &BL, &BH, &BX, &CL, &CH, &CX, &BP, &SP, &IP, &ZF, &SF);
+	Interpretador(memoria, regs);
 
 	fclose(arq);
 	free(memoria);

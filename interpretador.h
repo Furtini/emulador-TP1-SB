@@ -2,15 +2,13 @@
 // Software Basico - Trabalho Pratico 1
 // Emulador
 // Lucas Furtini Veado - 2013007609
-// Edson ...
+// Edson Roteia Araujo Junior - 2014004174
 
 #ifndef INTERPRETADOR_H
 #define INTERPRETADOR_H
 
-void Interpretador(int16_t *, int8_t *, int8_t *, int16_t *,
-							  int8_t *, int8_t *, int16_t *,
-							  int8_t *, int8_t *, int16_t *,
-							  int *, int *, int *,
-							  unsigned short *, unsigned short *);
+#define NUM_REG 8
+
+void Interpretador(int16_t *, int16_t *);
 
 #endif

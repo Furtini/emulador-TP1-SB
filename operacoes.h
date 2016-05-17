@@ -2,16 +2,15 @@
 // Software Basico - Trabalho Pratico 1
 // Emulador
 // Lucas Furtini Veado - 2013007609
-// Edson ...
+// Edson Roteia Araujo Junior - 2014004174
 #ifndef OPERACOES_H
 #define OPERACOES_H
 
 // -----------
 // Instrucoes:
 
-// 01 - MOV (48 bits)
-// op1 <- op2
-void MOV(int *mem, int *op1, int *op2);
+// 01 - MOV 
+void MOV(int16_t *mem, int16_t *reg, int8_t codigo, int IP);
 
 // 02 - ADD	(48 bits)
 // op1 = op1 + op2
@@ -21,7 +20,7 @@ void ADD(int *mem, int *op1, int *op2);
 // 03 - SUB (48 bits)
 // op1 = op1 - op2
 // Afeta -> ZF e SF
-void SUB(int *mem, int *op1, int *op2);
+void SUB(int16_t *mem, int16_t *reg, int codigo, int IP);
 
 // 04 - MUL (32 bits)
 // caso byte: AX = AL * op1
@@ -85,14 +84,13 @@ void PUSH (int *mem, int *op1);
 // Desempilha valor da memoria.
 void POP (int *mem, int *op1);   
    
-// 17 - DUMP (16 bits)
-// Imprime valores de todos os registradores separados por " ".
-void DUMP();
+// 17 - DUMP
+void DUMP(int16_t *reg);
 
 // 18 - READ (32 bits)
 // Le hexa do teclado e salva em reg ou mem. 
 // Afeta -> ZF e SF
-void READ(int *mem, int *op1);
+void READ(int16_t *mem, int16_t *reg, int8_t codigo, int IP);
 
 // 19 - WRITE (32 bits)
 // Escreve na tela valor do operando.
