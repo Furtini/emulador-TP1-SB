@@ -54,33 +54,31 @@ void OR(int16_t *mem, int16_t *reg, int codigo, int IP);
 // Afeta -> ZF e SF
 void CMP(int16_t *mem, int16_t *reg, int codigo, int IP);
 
-// 10 - JMP (32 bits)
+// 10 - JMP
 // Desvia para label indicado.
-void JMP (int16_t *mem, int16_t *reg, int codigo, int IP);
+void JMP (int16_t *mem, int16_t *reg, int IP);
 
-// 11 - JZ (32 bits)
+// 11 - JZ
 // Se ZF == 1, desvia.
-void JZ(int16_t *mem, int16_t *reg, int codigo, int IP);
+void JZ(int16_t *mem, int16_t *reg, int IP);
 
-// 12 - JS (32 bits)
+// 12 - JS
 // se SF == 1, desvia.
-void JS(int16_t *mem, int16_t *reg, int codigo, int IP);
+void JS(int16_t *mem, int16_t *reg, int IP);
 
-// 13 - CALL (32 bits)
+// 13 - CALL
 // Chama procedimento
 void CALL(int16_t *mem, int16_t *reg, int IP);
 
-// 14 - RET (16 bits)
+// 14 - RET
 // Retorna de um procedimento.
 void RET(int16_t *mem, int16_t *reg, int IP);
 
-// 15 - PUSH (32 bits)
-// SP = SP - 1
+// 15 - PUSH
 // Empilha valor na memoria.
 void PUSH (int16_t *mem, int16_t *reg, int codigo, int IP);
    
-// 16 - POP (32 bits)
-// SP = SP + 1
+// 16 - POP
 // Desempilha valor da memoria.
 void POP (int16_t *mem, int16_t *reg, int codigo, int IP);   
    

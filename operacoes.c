@@ -151,29 +151,243 @@ void OR(int16_t *mem, int16_t *reg, int codigo, int IP) {
 
 }
 
-// 09 - CMP (48 bits)
+// 09 - CMP
 // op1 - op2
 // Afeta -> ZF e SF
 void CMP(int16_t *mem, int16_t *reg, int codigo, int IP) {
 
+	int16_t op1 = mem[IP + 1];
+	int16_t op2 = mem[IP + 2];
+
+	int16_t temp = 0;
+
+	switch (codigo) {
+		// REG - MEM
+		case 3:
+			// Tratar lowers e highers.
+			switch (op1) {
+				// AL ou BL ou CL
+				case 0:
+				case 4:
+				case 6:
+					// Bits menos significativos da mem[op2].
+					temp = mem[op2]&0xff;
+
+					// Setando ZF e SF
+					((reg[op1] - temp) == 0) ? (reg[12] = 1) : (reg[12] = 0);
+					((reg[op1] - temp) >= 0) ? (reg[13] = 0) : (reg[13] = 1);	
+					break;
+				// AH ou BH ou CH
+				case 1:
+				case 3:
+				case 7:
+					// Pegando 8 bits mais significativos da mem[op2].
+					temp = mem[op2] >> 8;
+
+					// Setando ZF e SF
+					((reg[op1] - temp) == 0) ? (reg[12] = 1) : (reg[12] = 0);
+					((reg[op1] - temp) >= 0) ? (reg[13] = 0) : (reg[13] = 1);
+					break;
+				// AX ou BX ou CX
+				default:
+					// Setando ZF e SF
+					((reg[op1] - mem[op2]) == 0) ? (reg[12] = 1) : (reg[12] = 0);
+					((reg[op1] - mem[op2]) >= 0) ? (reg[13] = 0) : (reg[13] = 1);
+					break;	
+			}
+			break;
+		// MEM - REG
+		case 4:
+			// Tratar lowers e highers.
+			switch (op2) {
+				// AL ou BL ou CL
+				case 0:
+				case 4:
+				case 6:
+					// Bits menos significativos da mem[op2].
+					temp = mem[op1]&0xff;
+
+					// Setando ZF e SF
+					((temp - reg[op2]) == 0) ? (reg[12] = 1) : (reg[12] = 0);
+					((temp - reg[op2]) >= 0) ? (reg[13] = 0) : (reg[13] = 1);	
+					break;
+				// AH ou BH ou CH
+				case 1:
+				case 3:
+				case 7:
+					// Pegando 8 bits mais significativos da mem[op2].
+					temp = mem[op1] >> 8;
+
+					// Setando ZF e SF
+					((temp - reg[op2]) == 0) ? (reg[12] = 1) : (reg[12] = 0);
+					((temp - reg[op2]) >= 0) ? (reg[13] = 0) : (reg[13] = 1);
+					break;
+				// AX ou BX ou CX
+				default:
+					// Setando ZF e SF
+					((mem[op1] - reg[op2]) == 0) ? (reg[12] = 1) : (reg[12] = 0);
+					((mem[op1] - reg[op2]) >= 0) ? (reg[13] = 0) : (reg[13] = 1);
+					break;	
+			}
+			break;
+		// REG - REG
+		case 5:
+			// Tratar lowers e highers (op1).
+			switch (op1) {
+				// AL ou BL ou CL
+				case 0:
+				case 4:
+				case 6:
+					// Tratar lowers e highers (op2).
+					switch (op2) {
+						// AL ou BL ou CL
+						case 0:
+						case 4:
+						case 6:
+							// Setando ZF e SF
+							((reg[op1] - reg[op2]) == 0) ? (reg[12] = 1) : (reg[12] = 0);
+							((reg[op1] - reg[op2]) >= 0) ? (reg[13] = 0) : (reg[13] = 1);	
+							break;
+						// AH ou BH ou CH
+						case 1:
+						case 3:
+						case 7:
+							// Pegando 8 bits mais significativos do segundo operando.
+							temp = reg[op2] >> 8;
+
+							// Setando ZF e SF
+							((reg[op1] - temp) == 0) ? (reg[12] = 1) : (reg[12] = 0);
+							((reg[op1] - temp) >= 0) ? (reg[13] = 0) : (reg[13] = 1);
+							break;
+						// AX ou BX ou CX
+						default:
+							// Setando ZF e SF
+							((reg[op1] - reg[op2]) == 0) ? (reg[12] = 1) : (reg[12] = 0);
+							((reg[op1] - reg[op2]) >= 0) ? (reg[13] = 0) : (reg[13] = 1);
+							break;	
+					}
+					break;
+				// AH ou BH ou CH
+				case 1:
+				case 3:
+				case 7:
+					// Tratar lowers e highers.
+					switch (op2) {
+						// AL ou BL ou CL
+						case 0:
+						case 4:
+						case 6:
+							// Bits menos significativos da mem[op2].
+							temp = reg[op2] << 8;
+
+							// Setando ZF e SF
+							((reg[op1] - temp) == 0) ? (reg[12] = 1) : (reg[12] = 0);
+							((reg[op1] - temp) >= 0) ? (reg[13] = 0) : (reg[13] = 1);	
+							break;
+						// AH ou BH ou CH
+						case 1:
+						case 3:
+						case 7:
+							// Setando ZF e SF
+							((reg[op1] - reg[op2]) == 0) ? (reg[12] = 1) : (reg[12] = 0);
+							((reg[op1] - reg[op2]) >= 0) ? (reg[13] = 0) : (reg[13] = 1);
+							break;
+						// AX ou BX ou CX
+						default:
+							// Setando ZF e SF
+							((reg[op1] - reg[op2]) == 0) ? (reg[12] = 1) : (reg[12] = 0);
+							((reg[op1] - reg[op2]) >= 0) ? (reg[13] = 0) : (reg[13] = 1);
+							break;	
+					}
+					break;
+				// AX ou BX ou CX
+				default:
+					// Setando ZF e SF
+					((reg[op1] - reg[op2]) == 0) ? (reg[12] = 1) : (reg[12] = 0);
+					((reg[op1] - reg[op2]) >= 0) ? (reg[13] = 0) : (reg[13] = 1);
+					break;	
+			}
+			break;
+		// MEM - I
+		case 6:
+			// Setando ZF e SF
+			((mem[op1] - op2) == 0) ? (reg[12] = 1) : (reg[12] = 0);
+			((mem[op1] - op2) >= 0) ? (reg[13] = 0) : (reg[13] = 1);
+			break;
+		// REG - I
+		case 7:
+			// Tratar lowers e highers.
+			switch (op1) {
+				// AL ou BL ou CL
+				case 0:
+				case 4:
+				case 6:
+					// Bits menos significativos da mem[op2].
+					temp = (op2)&0xff;
+
+					// Setando ZF e SF
+					((reg[op1] - temp) == 0) ? (reg[12] = 1) : (reg[12] = 0);
+					((reg[op1] - temp) >= 0) ? (reg[13] = 0) : (reg[13] = 1);	
+					break;
+				// AH ou BH ou CH
+				case 1:
+				case 3:
+				case 7:
+					// Pegando 8 bits mais significativos da mem[op2].
+					temp = (op2) >> 8;
+
+					// Setando ZF e SF
+					((reg[op1] - temp) == 0) ? (reg[12] = 1) : (reg[12] = 0);
+					((reg[op1] - temp) >= 0) ? (reg[13] = 0) : (reg[13] = 1);
+					break;
+				// AX ou BX ou CX
+				default:
+					// Setando ZF e SF
+					((reg[op1] - op2) == 0) ? (reg[12] = 1) : (reg[12] = 0);
+					((reg[op1] - op2) >= 0) ? (reg[13] = 0) : (reg[13] = 1);
+					break;	
+			}
+			break;
+		default:
+			printf("ERRO: Codigo Operando!\n");
+			exit(1);
+			break;
+	}
 }
 
-// 10 - JMP (32 bits)
+// 10 - JMP
 // Desvia para label indicado.
-void JMP (int16_t *mem, int16_t *reg, int codigo, int IP) {
+void JMP(int16_t *mem, int16_t *reg, int IP) {
 
+	int16_t op1 = mem[IP + 1];
+
+	reg[11] = op1;
 }
 
-// 11 - JZ (32 bits)
+// 11 - JZ
 // Se ZF == 1, desvia.
-void JZ(int16_t *mem, int16_t *reg, int codigo, int IP) {
+void JZ(int16_t *mem, int16_t *reg, int IP) {
 
+	int16_t op1 = mem[IP + 1];
+
+	if (reg[12] == 1) {
+		reg[11] = op1;
+	} else {
+		reg[11] = reg[11] + 2;		
+	}
 }
 
-// 12 - JS (32 bits)
-// se SF == 1, desvia.
-void JS(int16_t *mem, int16_t *reg, int codigo, int IP) {
+// 12 - JS
+// Se SF == 1, desvia.
+void JS(int16_t *mem, int16_t *reg, int IP) {
 
+	int16_t op1 = mem[IP + 1];
+
+	if (reg[13] == 1) {
+		reg[11] = op1;
+	} else {
+		reg[11] = reg[11] + 2;		
+	}
 }
 
 // 13 - CALL
@@ -287,7 +501,7 @@ void POP (int16_t *mem, int16_t *reg, int codigo, int IP){
 				reg[8] = reg[8] >> 8;
 				reg[8] = reg[8] + reg[op1];
 				break;
-		
+			// AX ou BX ou CX
 			default:
 				reg[op1] = mem[reg[10]];
 				break;
@@ -377,9 +591,8 @@ void READ(int16_t *mem, int16_t *reg, int8_t codigo, int IP) {
 				reg[8] = reg[8] >> 8;
 				reg[8] = reg[8] + reg[op1];
 				break;
-		
+			// AX ou BX ou CX		
 			default:
-
 				reg[op1] = input;
 				break;
 		}		

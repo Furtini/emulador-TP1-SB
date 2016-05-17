@@ -76,18 +76,15 @@ void Interpretador(int16_t *memoria, int16_t *regs) {
 				break;
 			case 10: // JMP
 				printf("-JMP-\n");
-				JMP(memoria, regs, codigo, regs[11]);
-				regs[11] += 2;
+				JMP(memoria, regs, regs[11]);
 				break;
 			case 11: // JZ
 				printf("-JZ-\n");
-				JZ(memoria, regs, codigo, regs[11]);
-				regs[11] += 2;
+				JZ(memoria, regs, regs[11]);
 				break;
 			case 12: // JS
 				printf("-JS-\n");
-				JS(memoria, regs, codigo, regs[11]);
-				regs[11] += 2;
+				JS(memoria, regs, regs[11]);
 				break;
 			case 13: // CALL
 				printf("-CALL-\n");
