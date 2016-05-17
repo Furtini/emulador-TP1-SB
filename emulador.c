@@ -29,22 +29,23 @@ int main(int argc, char const *argv[]) {
 	int16_t *memoria;
 	
 	// REGISTRADORES.
-	// 0 - AX
-	// 1 - BX
-	// 2 - CX
-	// 3 - SP
-	// 4 - BP
-	// 5 - IP
-	// 6 - ZF
-	// 7 - SF
+	// 2 - AX
+	// 5 - BX
+	// 8 - CX
+	// 9 - SP
+	// 10 - BP
+	// 11 - IP
+	// 12 - ZF
+	// 13 - SF
 	int16_t *regs;
 
 	int16_t AX = 5000;
 	int16_t input = 10;
-	int8_t AL;
+	int16_t AL;
 	int16_t AH = (AX >> 8);
 
-	AL = AX & 0xff;
+	AL = AX << 8;
+	AL = AL >> 8;
 	// =========================================================================
 
 	printf("AX: %" PRId16 "\n",AX);
@@ -73,7 +74,7 @@ int main(int argc, char const *argv[]) {
 	arq = AbreArquivo(argv[1]);
 
 	// Leitura das instrucoes.
-	Carregador(arq, memoria, &regs[5]);
+	Carregador(arq, memoria, &regs[11]);
 	
 	Interpretador(memoria, regs);
 

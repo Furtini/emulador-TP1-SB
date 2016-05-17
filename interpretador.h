@@ -7,7 +7,7 @@
 #ifndef INTERPRETADOR_H
 #define INTERPRETADOR_H
 
-#define NUM_REG 8
+#define NUM_REG 14
 
 void Interpretador(int16_t *, int16_t *);
 

@@ -8,7 +8,7 @@
 #define CARREGADOR_H
 
 #define TAM_MEMORIA 1001
-#define	NUM_REG 8
+#define	NUM_REG 14
 
 // Inicia memoria.
 int16_t *InicializaMemoria();
@@ -38,12 +38,12 @@ void Carregador(FILE *arq, int16_t *, int16_t *);
 // 09 - CMP  2op (48 bits -> 3)		8 - Imediato
 // 10 - JMP  1op (32 bits -> 2)
 // 11 - JZ   1op (32 bits -> 2)		------ Registradores Geral -----
-// 12 - JS   1op (32 bits -> 2)		0 - AL		0 - AX
-// 13 - CALL 1op (32 bits -> 2)		1 - AH		1 - BX
-// 14 - RET  0op (16 bits -> 1)		2 - AX		2 - CX
-// 16 - POP  1op (32 bits -> 2)		4 - BL		3 - SP
-// 15 - PUSH 1op (32 bits -> 2)		3 - BH		4 - BP
-// 17 - DUMP 0op (16 bits -> 1)		5 - BX		5 - IP
-// 18 - READ 1op (32 bits -> 2)		6 - CL 		6 - ZF
-// 19 - WRITE 1op (32 bits -> 2)	7 - CH 		7 - SF
+// 12 - JS   1op (32 bits -> 2)		0 - AL		 
+// 13 - CALL 1op (32 bits -> 2)		1 - AH		
+// 14 - RET  0op (16 bits -> 1)		2 - AX		
+// 15 - PUSH 1op (32 bits -> 2)		3 - BH		9 - SP
+// 16 - POP  1op (32 bits -> 2)		4 - BL		10 - BP
+// 17 - DUMP 0op (16 bits -> 1)		5 - BX		11 - IP
+// 18 - READ 1op (32 bits -> 2)		6 - CL 		12 - ZF
+// 19 - WRITE 1op (32 bits -> 2)	7 - CH 		13 - SF
 // 20 - HLT  0op (16 bits -> 1)		8 - CX
