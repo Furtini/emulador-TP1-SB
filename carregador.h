@@ -7,7 +7,7 @@
 #ifndef CARREGADOR_H
 #define CARREGADOR_H
 
-#define TAM_MEMORIA 1001
+#define TAM_MEMORIA 1000
 #define	NUM_REG 14
 
 // Inicia memoria.

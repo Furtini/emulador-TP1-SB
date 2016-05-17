@@ -37,7 +37,7 @@ int main(int argc, char const *argv[]) {
 	// 11 - IP
 	// 12 - ZF
 	// 13 - SF
-	int16_t *regs;
+	int16_t *registradores;
 
 	int16_t AX = 5000;
 	int16_t input = 10;
@@ -48,19 +48,19 @@ int main(int argc, char const *argv[]) {
 	AL = AL >> 8;
 	// =========================================================================
 
-	printf("AX: %" PRId16 "\n",AX);
-	printf("AL: %" PRId16 "\n",AL );
-	printf("AH: %" PRId16 "\n",AH );
-	printf("Input: %" PRId16 "\n",input );
-	printf("-------------\n");
+	//printf("AX: %" PRId16 "\n",AX);
+	//printf("AL: %" PRId16 "\n",AL );
+	//printf("AH: %" PRId16 "\n",AH );
+	//printf("Input: %" PRId16 "\n",input );
+	//printf("-------------\n");
 	AH = AH + input;
-	printf("AH: %" PRId16 "\n",AH );
+	//printf("AH: %" PRId16 "\n",AH );
 	AL = AL + input;
 	AH = AH << 8;
 	AX = AX + AL;
-	printf("AL: %" PRId16 "\n",AL );
-	printf("AH: %" PRId16 "\n",AH );
-	printf("AX :%" PRId16 "\n",AX);
+	//printf("AL: %" PRId16 "\n",AL );
+	//printf("AH: %" PRId16 "\n",AH );
+	//printf("AX :%" PRId16 "\n",AX);
 //	int x = 1;
 //	char *y = (char*)&x;
 //	printf("%c\n",*y+48);
@@ -68,15 +68,20 @@ int main(int argc, char const *argv[]) {
 	// Inicializa memoria
 	memoria = InicializaMemoria();
 	// Inicializa registradores.
-	regs = InicializaRegistradores();
+	registradores = InicializaRegistradores();
+
+	// BP recebe Endereco mem[1000] 
+	registradores[9] = 1001;
+	// SP inicia = BP
+	registradores[10] = 1001;
 
 	// Abertura de arquivo contendo instrucoes.
 	arq = AbreArquivo(argv[1]);
 
 	// Leitura das instrucoes.
-	Carregador(arq, memoria, &regs[11]);
+	Carregador(arq, memoria, &registradores[11]);
 	
-	Interpretador(memoria, regs);
+	Interpretador(memoria, registradores);
 
 	fclose(arq);
 	free(memoria);

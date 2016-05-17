@@ -10,71 +10,6 @@
 
 #include "operacoes.h"
 
-// Identifica qual registrador usar.
-static int16_t IdRegistrador(int16_t *reg, int8_t cod) {
-
-	// Setando Lower and higher regs.
-	// AL
-	reg[0] = reg[2] << 8;
-	reg[0] = reg[0] >> 8;
-	// AH
-	reg[1] = reg[2] >> 8;
-	// BH
-	reg[3] = reg[5] >> 8;
-	// BL	
-	reg[4] = reg[5] << 8;
-	reg[4] = reg[4] >> 8;
-	// CL
-	reg[6] = reg[8] << 8;
-	reg[6] = reg[6] >> 8;
-	// CH
-	reg[7] = reg[8] >> 8;
-
-	switch (cod) {
-		case 0: // AL
-			printf("AL\n");
-			return reg[0];
-			break;
-		case 1: // AH
-			printf("AH\n");
-			return reg[1];
-			break;
-		case 2: // AX
-			printf("AX\n");
-			return reg[2];
-			break;
-		case 3: // BH
-			printf("BH\n");
-			return reg[3];
-			break;
-		case 4: // BL
-			printf("BL\n");
-			return reg[4];
-			break;
-		case 5: // BX
-			printf("BX\n");
-			return reg[5];
-			break;
-		case 6: // CL
-			printf("CL\n");
-			return reg[6];
-			break;
-		case 7: // CH
-			printf("CH\n");
-			return reg[7];
-			break;
-		case 8: // CX
-			printf("CX\n");
-			return reg[8];
-			break;
-		default:
-			printf("ERRO de codigo de registrador.\n");
-			return 0;
-			break;	
-	}
-}
-
-
 // -----------
 // Instrucoes:
 
@@ -172,176 +107,7 @@ void SUB(int16_t *mem, int16_t *reg, int codigo, int IP) {
 	printf("%" PRId16 "\n",op1 );
 	printf("%" PRId16 "\n",op2 );
  
-	// Setando Lower and higher regs.
-	AL = reg[0] & 0xff;
-	AH = reg[0] >> 8;
-	BL = reg[1] & 0xff;
-	BH = reg[1] >> 8;
-	CL = reg[2] & 0xff;
-	CH = reg[2] >> 8;
-
-	switch (codigo) {
-		case 3: // REG e MEM
-			switch (op1) {
-				case 0: // AL
-					AL = AL - mem[op2];
-					reg[0] = reg[0] - AL;
-					resp = reg[0];
-					break;
-				case 1: // AH
-					AH = AH - mem[op2];
-					AH = AH << 8;
-					reg[0] = reg[0] - AH;
-					resp = reg[0];
-					break;
-				case 2: // AX
-					reg[0] = reg[0] - mem[op2];
-					resp = reg[0];
-					break;
-				case 3: // BH
-					BH = BH - mem[op2];
-					BH = BH << 8;
-					reg[1] = reg[1] - BH;
-					resp = reg[1];
-					break;
-				case 4: // BL
-					BL = BL - mem[op2];
-					reg[1] = reg[1] - BL;
-					resp = reg[1];
-					break;
-				case 5: // BX
-					reg[1] = reg[1] - mem[op2];
-					resp = reg[1];
-					break;
-				case 6: // CL
-					CL = CL - mem[op2];
-					reg[2] = reg[2] - CL;
-					resp = reg[2];
-					break;
-				case 7: // CH
-					CH = CH - mem[op2];
-					CH = CH << 8;
-					reg[2] = reg[2] - CH;
-					resp = reg[2];
-					break;
-				case 8: // CX
-					reg[2] = reg[2] - mem[op2];
-					resp = reg[2];
-					break;
-				default:
-					printf("ERRO de codigo de registrador.\n");
-					exit(1);
-					break;
-			}
-			break;				
-		case 4: // MEM e REG
-			switch (op2) {
-				case 0: // AL
-					mem[op1] = mem[op1] - AL;
-					resp = mem[op1];
-					break;
-				case 1: // AH
-					mem[op1] = mem[op1] - AH;
-					resp = mem[op1];
-					break;
-				case 2: // AX
-					mem[op1] = mem[op1] - reg[0];
-					resp = mem[op1];
-					break;
-				case 3: // BH
-					mem[op1] = mem[op1] - BH;
-					resp = mem[op1];
-					break;
-				case 4: // BL
-					mem[op1] = mem[op1] - BL;
-					resp = mem[op1];
-					break;
-				case 5: // BX
-					mem[op1] = mem[op1] - reg[1];
-					resp = mem[op1];
-					break;
-				case 6: // CL
-					mem[op1] = mem[op1] - CL;
-					resp = mem[op1];
-					break;
-				case 7: // CH
-					mem[op1] = mem[op1] - CH;
-					resp = mem[op1];
-					break;
-				case 8: // CX
-					mem[op1] = mem[op1] - reg[2];
-					resp = mem[op1];
-					break;
-				default:
-					printf("ERRO de codigo de registrador.\n");
-					exit(1);
-					break;
-			}
-			break;
-		case 5: // REG e REG 
-			break;
-		case 6: // MEM e I
-			mem[op1] = mem[op1] + op2;
-			resp = mem[op1];
-			break;
-		case 7: // REG e I
-			switch (op1) {
-				case 0: // AL
-					AL = AL - op2;
-					reg[0] = reg[0] - AL;
-					resp = reg[0];
-					break;
-				case 1: // AH
-					AH = AH - op2;
-					AH = AH << 8;
-					reg[0] = reg[0] - AH;
-					resp = reg[0];
-					break;
-				case 2: // AX
-					reg[0] = reg[0] - op2;
-					resp = reg[0];
-					break;
-				case 3: // BH
-					BH = BH - op2;
-					BH = BH << 8;
-					reg[1] = reg[1] - BH;
-					resp = reg[1];
-					break;
-				case 4: // BL
-					BL = BL - op2;
-					reg[1] = reg[1] - BL;
-					resp = reg[1];
-					break;
-				case 5: // BX
-					reg[1] = reg[1] - op2;
-					resp = reg[1];
-					break;
-				case 6: // CL
-					CL = CL - op2;
-					reg[2] = reg[2] - CL;
-					resp = reg[2];
-					break;
-				case 7: // CH
-					CH = CH - op2;
-					CH = CH << 8;
-					reg[2] = reg[2] - CH;
-					resp = reg[2];
-					break;
-				case 8: // CX
-					reg[2] = reg[2] - op2;
-					resp = reg[2];
-					break;
-				default:
-					printf("ERRO de codigo de registrador.\n");
-					exit(1);
-					break;
-			}
-			break;
-		default:
-			printf("ERRO de codigo.\n");
-			exit(1);
-			break;
-	}
+	
 	// Setando ZF e SF
 	(resp == 0) ? (reg[6] = 1) : (reg[6] = 0);
 	(resp >= 0) ? (reg[7] = 0) : (reg[7] = 1);			
@@ -410,42 +176,137 @@ void JS(int16_t *mem, int16_t *reg, int codigo, int IP) {
 
 }
 
-// 13 - CALL (32 bits)
+// 13 - CALL
 // Chama procedimento
-void CALL(int16_t *mem, int16_t *reg, int codigo, int IP) {
+void CALL(int16_t *mem, int16_t *reg, int IP) {
 
+	int16_t op1 = mem[IP + 1];
+
+	// Decrementa SP
+	reg[10] = reg[10] - 1;
+	// EMPILHA IP da prox instrucao.
+	mem[reg[10]] = IP + 2;
+
+	// IP passa a ser a posicao da memoria de op1.
+	reg[11] = op1; 
 }
 
 // 14 - RET (16 bits)
 // Retorna de um procedimento.
-void RET(int16_t *mem, int16_t *reg, int codigo, int IP) {
+void RET(int16_t *mem, int16_t *reg, int IP) {
 
+	// Recupera valor do IP empilhado.
+	reg[11] = mem[reg[10]];
+
+	reg[10] = reg[10] + 1;
 }
 
-// 15 - PUSH (32 bits)
-// SP = SP - 1
+// 15 - PUSH
 // Empilha valor na memoria.
 void PUSH (int16_t *mem, int16_t *reg, int codigo, int IP) {
 
+	int16_t op1 = mem[IP + 1];
+
+	// Decrementa SP
+	reg[10] = reg[10] - 1;
+	
+	// REG
+	if (codigo == 1) {
+		mem[reg[10]] = reg[op1];
+	}
+	// MEM
+	if (codigo == 2) {
+		mem[reg[10]] = mem[op1];
+	}
+	// IMEDIATO
+	if (codigo == 8) {
+		mem[reg[10]] = op1;
+	}
 }
    
-// 16 - POP (32 bits)
-// SP = SP + 1
+// 16 - POP
 // Desempilha valor da memoria.
 void POP (int16_t *mem, int16_t *reg, int codigo, int IP){
 
+	int16_t op1 = mem[IP + 1];
+	
+	// REG
+	if (codigo == 1) {
+		switch (op1) {
+			// AL
+			case 0:
+				// Pegando 8 bits menos significativos da memoria. 
+				reg[op1] = mem[reg[10]]&0xff;
+
+				reg[2] = reg[2] >> 8;
+				reg[2] = reg[2] << 8;
+				reg[2] = reg[2] + reg[op1];
+				break;
+			// AH
+			case 1: 
+				// Pegando 8 bits menos significativos da memoria. 
+				reg[op1] = mem[reg[10]]&0xff;
+
+				reg[2] = reg[2] << 8;				
+				reg[2] = reg[2] >> 8;
+				reg[2] = reg[2] + reg[op1];
+				break;
+			// BH	
+			case 3:
+				// Pegando 8 bits menos significativos da memoria. 
+				reg[op1] = mem[reg[10]]&0xff; 
+
+				reg[5] = reg[5] << 8;
+				reg[5] = reg[5] >> 8;
+				reg[5] = reg[5] + reg[op1];
+				break;
+			//BL
+			case 4:
+				// Pegando 8 bits menos significativos da memoria. 
+				reg[op1] = mem[reg[10]]&0xff; 
+
+				reg[5] = reg[5] >> 8;
+				reg[5] = reg[5] << 8;
+				reg[5] = reg[5] + reg[op1];
+				break;
+			// CL
+			case 6:
+				// Pegando 8 bits menos significativos da memoria. 
+				reg[op1] = mem[reg[10]]&0xff; 
+
+				reg[8] = reg[8] >> 8;
+				reg[8] = reg[8] << 8;
+				reg[8] = reg[8] + reg[op1];
+				break;
+			// CH	
+			case 7: 
+				// Pegando 8 bits menos significativos da memoria. 
+				reg[op1] = mem[reg[10]]&0xff; 
+
+				reg[8] = reg[8] << 8;
+				reg[8] = reg[8] >> 8;
+				reg[8] = reg[8] + reg[op1];
+				break;
+		
+			default:
+				reg[op1] = mem[reg[10]];
+				break;
+		}		
+	}
+	// MEM
+	if (codigo == 2) {
+		mem[op1] = mem[reg[10]];
+	}
+	// Incrementa SP
+	reg[10] = reg[10] + 1;
 } 
    
 // 17 - DUMP
 // Imprime valores de todos os registradores separados por " ".
 void DUMP(int16_t *reg) {
 
-	int i;
-	
-	printf("AX   BX   CX   BP   SP   IP   ZF   SF\n");
-	for(i = 0; i < 8; i++) {
-		printf("%04hX ",reg[i]);
-	}
+	printf("AX   BX   CX   SP   BP   IP   ZF   SF\n");
+	printf("%04hX %04hX %04hX %04hX %04hX %04hX %04hX %04hX", reg[2],reg[5],reg[8],reg[10],reg[9],reg[11],reg[12],reg[13]);
 	printf("\n");
 }
 
@@ -453,92 +314,99 @@ void DUMP(int16_t *reg) {
 void READ(int16_t *mem, int16_t *reg, int8_t codigo, int IP) {
 
 	int16_t input;
-	// Temps regs.
-	int8_t  AL, BL, CL;
-	int16_t AH, BH, CH;
-
+	
 	int16_t op1 = mem[IP + 1];
-	
-	// Setando Lower and higher regs.
-	AL = reg[0] & 0xff;
-	AH = reg[0] >> 8;
-	BL = reg[1] & 0xff;
-	BH = reg[1] >> 8;
-	CL = reg[2] & 0xff;
-	CH = reg[2] >> 8;
-	
+
 	printf("Entre com o valor: ");
 	scanf("%" SCNx16, &input);
 	
-	printf("input: %d\n",input );
 	// Setando ZF e SF
-	(input == 0) ? (reg[6] = 1) : (reg[6] = 0);
-	(input >= 0) ? (reg[7] = 0) : (reg[7] = 1);	
+	(input == 0) ? (reg[12] = 1) : (reg[12] = 0);
+	(input >= 0) ? (reg[13] = 0) : (reg[13] = 1);	
 	
 	// REG
 	if (codigo == 1) {
+		printf("CODIGO: %d\n",codigo );
+		printf("Endereco banco reg: %d\n", op1);
 		switch (op1) {
-			case 0: // AL
+			// AL
+			case 0:
+				reg[op1] = input;
 
-				AL = AL + input;
-				reg[0] = reg[0] + AL;
+				reg[2] = reg[2] >> 8;
+				reg[2] = reg[2] << 8;
+				reg[2] = reg[2] + reg[op1];
 				break;
-			case 1: // AH
+			// AH
+			case 1: 
+				reg[op1] = input;
 
-				AH = AH + input;
-				AH = AH << 8;
-				reg[0] = reg[0] + AH;
+				reg[2] = reg[2] << 8;				
+				reg[2] = reg[2] >> 8;
+				reg[2] = reg[2] + reg[op1];
 				break;
-			case 2: // AX
-				
-				reg[0] = input;
-				break;
-			case 3: // BH
+			// BH	
+			case 3: 
+				reg[op1] = input;
 
-				BH = BH + input;
-				BH = BH << 8;
-				reg[1] = reg[1] + BH;
+				reg[5] = reg[5] << 8;
+				reg[5] = reg[5] >> 8;
+				reg[5] = reg[5] + reg[op1];
 				break;
-			case 4: // BL
+			//BL
+			case 4:
+				reg[op1] = input;
 
-				BL = BL + input;
-				reg[1] = reg[1] + BL;
+				reg[5] = reg[5] >> 8;
+				reg[5] = reg[5] << 8;
+				reg[5] = reg[5] + reg[op1];
 				break;
-			case 5: // BX
+			// CL
+			case 6:
+				reg[op1] = input;
 
-				reg[1] = input;
+				reg[8] = reg[8] >> 8;
+				reg[8] = reg[8] << 8;
+				reg[8] = reg[8] + reg[op1];
 				break;
-			case 6: // CL
+			// CH	
+			case 7: 
+				reg[op1] = input;
 
-				CL = CL + input;
-				reg[2] = reg[2] + CL;
+				reg[8] = reg[8] << 8;
+				reg[8] = reg[8] >> 8;
+				reg[8] = reg[8] + reg[op1];
 				break;
-			case 7: // CH
-
-				CH = CH + input;
-				CH = CH << 8;
-				reg[2] = reg[2] + CH;
-				break;
-			case 8: // CX
-
-				reg[2] = input;
-				break;
+		
 			default:
-				printf("ERRO de codigo de registrador.\n");
-				exit(1);
+
+				reg[op1] = input;
 				break;
 		}		
+	}
+	// MEM
+	if (codigo == 2) {
+		mem[op1] = input;
 	}
 }
 
 // 19 - WRITE (32 bits)
 // Escreve na tela valor do operando.
 void WRITE(int16_t *mem, int16_t *reg, int codigo, int IP) {
+	
+	int16_t op1 = mem[IP + 1];
 
+	// REG
+	if (codigo == 1) {
+		printf("%04hX\n",reg[op1]);
+	}
+	// MEM
+	if (codigo == 2) {
+		printf("%04hX\n",mem[op1]);
+	}
 }
 
-// 20 - HLT (16 bits)
+// 20 - HLT
 // Interrompe execucao.
-void HLT() {
-
-}
+// Tratado no proprio case do interpretador.
+int HLT() {return 0;}

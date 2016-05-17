@@ -6,8 +6,6 @@
 #ifndef OPERACOES_H
 #define OPERACOES_H
 
-// Identifica qual registrador usar.
-static int16_t IdRegistrador(int16_t *reg, int8_t cod);
 // -----------
 // Instrucoes:
 
@@ -70,11 +68,11 @@ void JS(int16_t *mem, int16_t *reg, int codigo, int IP);
 
 // 13 - CALL (32 bits)
 // Chama procedimento
-void CALL(int16_t *mem, int16_t *reg, int codigo, int IP);
+void CALL(int16_t *mem, int16_t *reg, int IP);
 
 // 14 - RET (16 bits)
 // Retorna de um procedimento.
-void RET(int16_t *mem, int16_t *reg, int codigo, int IP);
+void RET(int16_t *mem, int16_t *reg, int IP);
 
 // 15 - PUSH (32 bits)
 // SP = SP - 1
@@ -87,19 +85,19 @@ void PUSH (int16_t *mem, int16_t *reg, int codigo, int IP);
 void POP (int16_t *mem, int16_t *reg, int codigo, int IP);   
    
 // 17 - DUMP
+// Imprime todos os registradores. Menos os lower e higher.
 void DUMP(int16_t *reg);
 
-// 18 - READ (32 bits)
+// 18 - READ
 // Le hexa do teclado e salva em reg ou mem. 
 // Afeta -> ZF e SF
 void READ(int16_t *mem, int16_t *reg, int8_t codigo, int IP);
 
-// 19 - WRITE (32 bits)
-// Escreve na tela valor do operando.
+// 19 - WRITE
+// Escreve na tela valor do registrado ou posicao da memoria pedido.
 void WRITE(int16_t *mem, int16_t *reg, int codigo, int IP);
 
-// 20 - HLT (16 bits)
-// Interrompe execucao.
-void HLT();
+// 20 - HLT
+int HLT();
 
 #endif
