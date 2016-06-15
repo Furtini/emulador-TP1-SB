@@ -6,50 +6,54 @@
 #ifndef OPERACOES_H
 #define OPERACOES_H
 
+// Atualiza os registradores no final de cada execucacao da instrucao.
+static void AtualizaRegs(int16_t *reg, int16_t operando);
+
 // -----------
 // Instrucoes:
-
 // 01 - MOV 
+// op1 = op2
+//Afeta - > ZF e SF
 void MOV(int16_t *mem, int16_t *reg, int8_t codigo, int IP);
 
-// 02 - ADD	(48 bits)
+// 02 - ADD
 // op1 = op1 + op2
 //Afeta - > ZF e SF
 void ADD(int16_t *mem, int16_t *reg, int codigo, int IP);
 
-// 03 - SUB (48 bits)
+// 03 - SUB
 // op1 = op1 - op2
 // Afeta -> ZF e SF
 void SUB(int16_t *mem, int16_t *reg, int codigo, int IP);
 
-// 04 - MUL (32 bits)
+// 04 - MUL
 // caso byte: AX = AL * op1
 // caso word: AX = AX * op1
 void MUL(int16_t *mem, int16_t *reg, int codigo, int IP);
 
-// 05 - DIV (32 bits)  
+// 05 - DIV 
 // caso byte: AL = AX/op1
 //			  AH = resto da div
 // caso word: AX = AX/op1	
 //			  BX = resto da div
 void DIV(int16_t *mem, int16_t *reg, int codigo, int IP);
 
-// 06 - AND (48bits)
+// 06 - AND
 // op1 = op1 AND op2
 // Afeta ZF e SF
 void AND(int16_t *mem, int16_t *reg, int codigo, int IP);
 
-// 07 - NOT (32 bits)
+// 07 - NOT
 // op1 = ~op1
 // Afeta -> ZF e SF
 void NOT(int16_t *mem, int16_t *reg, int codigo, int IP);
 
-// 08 - OR (48 bits)
+// 08 - OR
 // op1 = op1 OR op2
 // Afeta -> ZF e SF
 void OR(int16_t *mem, int16_t *reg, int codigo, int IP);
 
-// 09 - CMP (48 bits)
+// 09 - CMP
 // op1 - op2
 // Afeta -> ZF e SF
 void CMP(int16_t *mem, int16_t *reg, int codigo, int IP);

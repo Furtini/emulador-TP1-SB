@@ -99,7 +99,7 @@ void Carregador(FILE *arq, int16_t *memoria, int16_t *IP){
 				(*IP) = (*IP) + 3;
 				break;
 			default:
-				printf("Opcode errado.\n");
+				printf("Opcode errado: %d.\n",codOperando);
 				break;
 		}
 	}
